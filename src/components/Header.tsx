@@ -10,8 +10,12 @@ export default function Header() {
   const { pathname } = useLocation();
   const isHome = useMemo(() => pathname === "/", [pathname]);
 
+  // Consultar la categorias al Web Service
   const fetchCategories = useAppStore((state) => state.fetchCategories);
+
+  // Leer las categorias recuperadas
   const categories = useAppStore((state)=> state.categories);
+  
   const searchRecipe = useAppStore((state) => state.searchRecipes);
 
   useEffect(() => {
