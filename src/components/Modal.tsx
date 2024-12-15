@@ -5,7 +5,7 @@ import {
   DialogTitle,
   TransitionChild,
 } from "@headlessui/react";
-import { Fragment } from "react";
+import { Fragment, useEffect } from "react";
 import { useAppStore } from "../stores/useAppStores";
 import { Recipe } from "../types";
 
@@ -14,8 +14,13 @@ export default function Modal() {
   const closeModal = useAppStore((state) => state.closeModal);
   const selectedRecipe = useAppStore((state) => state.selectedRecipe);
   const handleClickFavorite = useAppStore((state) => state.handleClickFavorite);
+  const favoriteExists = useAppStore((state) => state.favoriteExists);
+  const favorites = useAppStore(state => state.favorites);
+  let isFavorite = favoriteExists(selectedRecipe.idDrink);
 
-
+  useEffect(() => {
+    isFavorite = favoriteExists(selectedRecipe.idDrink);
+  }, [favorites]);
   const renderIngredients = () => {
     const ingredients: JSX.Element[] = [];
     for (let i = 1; i <= 6; i++) {
@@ -103,7 +108,7 @@ export default function Modal() {
                         className="w-full rounded bg-orange-600 p-3 font-bold 
                         uppercase text-white shadow hover:bg-orange-500"
                         onClick={() => handleClickFavorite(selectedRecipe)}
-                    >Agregar a favoritos</button>
+                    >{ isFavorite ? 'Eliminar de Favoritos' : 'Agregar a Favoritos' }</button>
                   </div>
                 </DialogPanel>
               </TransitionChild>
